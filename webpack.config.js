@@ -12,7 +12,7 @@ var cssProd = ExtractTextPlugin.extract({
       'postcss-loader?sourceMap=inline',
       'sass-loader'
     ],
-    publicPath: '/dist'
+    publicPath: '/dist/'
 });
 var cssConfig = isProd ? cssProd : cssDev;
 
@@ -35,6 +35,35 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: 'babel-loader'
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            query: {
+              name: '[name].[ext]',
+              outputPath: 'images/',
+              //publicPath: 'images/'
+            }             
+          },
+          {
+            loader: 'image-webpack-loader',
+            query: {
+              mozjpeg: {
+                quality: 80
+              },
+              pngquant: {
+                quality: '65-90',
+                speed: 4
+              },
+              svgo: {
+                removeViewBox: false,
+                removeEmptyAttrs: false
+              }
+            }
+          }  
+        ]
       }
     ]
   },
